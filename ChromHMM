@@ -1,0 +1,13 @@
+for i in range(len(files)):
+    if files[i].split('.') !='':
+        marker_file='./input_csv/dynamic/one_marker/new/'+files[i]
+        chromsize='/h/xiangling/TF_chipseq_pipeline/genome/hg19/hg19.chrom.sizes'
+        signal_dir='./bam/'
+        binary_dir='./binary_files/bam_0820/HUVEC/one_marker/'+files[i].split('.')[0]
+        output_dir='./chromHMM/bam_0820/HUVEC/one_marker/'+files[i].split('.')[0]
+        call(f'mkdir -p {binary_dir}',shell=True)
+        call(f'mkdir -p {output_dir}',shell=True)
+        call(f'java -mx1600M -jar ~/ChromHMM/ChromHMM.jar BinarizeBam \
+            {chromsize} {signal_dir} {marker_file} {binary_dir}',shell=True)
+        call(f'java -mx1600M -jar ~/ChromHMM/ChromHMM.jar LearnModel \
+        {binary_dir} {output_dir} 5  hg19',shell=True)
